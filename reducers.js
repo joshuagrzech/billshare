@@ -1,4 +1,5 @@
-  
+var randomToken = require('random-token');
+
 export const initialState = {
     introduced: false,
     signedIn: false,
@@ -17,16 +18,24 @@ const AstroReducers = (state = initialState, action) => {
             return Object.assign({}, state, {
                 introduced: true
             })
-        case 'signIn':
+        case 'existingHouse':
             return Object.assign({}, state, {
                 signedIn: true,
-                accessToken: action.payload
+                existingHouse: action.payload,
+                qrCodeGenerated: true
             })
-        case 'setBirthday':
+        case 'newHouse':
             return Object.assign({}, state, {
-                profile: Object.assign({}, state.profile, {
-                    birthdate: action.payload
-                })
+                signedIn: true,
+                newHouse: action.payload
+            })
+        case 'setProfile':
+            return Object.assign({}, state, {
+                profile: Object.assign({}, action.payload, {
+                    token: randomToken(16)
+                }),
+                qrCodeGenerated: false,
+                newHouse: false
             })
         default:
             return state

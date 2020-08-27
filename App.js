@@ -5,7 +5,7 @@ import AppNavigator from './NavigationContainer'
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Provider } from 'react-redux'
-import {store} from './store'
+import {epicMiddleware, store} from './store'
 import {persistor} from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -26,6 +26,7 @@ const storage = new Storage({
 
 export default () => (
   <Provider store={store} style={{ backgroundColor: "blue" }}>
+   
     <PersistGate loading={null} persistor={persistor}>
       <NavigationContainer style={{ height: "100%" }}>
       

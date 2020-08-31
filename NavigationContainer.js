@@ -25,7 +25,10 @@ const mapDispatchToProps = dispatch => ({
     },
     setProfile: (value) => {
         dispatch({type: 'setProfile', payload: value })
-    }    
+    },
+    setupComplete: (value) => {
+        dispatch({type: 'setupComplete', payload: value})
+    }     
 })
 
 

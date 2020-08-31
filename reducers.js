@@ -37,6 +37,10 @@ const AstroReducers = (state = initialState, action) => {
                 qrCodeGenerated: false,
                 newHouse: false
             })
+        case 'setupComplete': 
+            return Object.assign({}, state, {
+               qrCodeGenerated: true, 
+            })
         default:
             return state
     }

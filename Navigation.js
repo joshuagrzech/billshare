@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "./src/HomeScreen/HomeScreenComponent";
+import HomeScreen from "./src/HomeScreen/HomeScreenContainer";
 import { DetailsScreen } from "./src/Details/DetailsComponent";
 import {
   Text,
@@ -22,6 +22,12 @@ import {
   faStarAndCrescent,
   faEye,
   faUserAlt,
+  faFileInvoice,
+  faCommentDollar,
+  faDoorClosed,
+  faDoorOpen,
+  faFileInvoiceDollar,
+  faCommentsDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Formik } from "formik";
@@ -98,7 +104,7 @@ export class AppNavigator extends React.Component {
             }}
           >
             <Text style={{ fontSize: 25, color: "blue" }}>Start Here</Text>
-            <Text style={{ color: "blue" }}>{`${this.props.newHouse}`}</Text>
+            
           </TouchableOpacity>
           <Text style={{ fontSize: 25, marginTop: 50 }}>
             Sign Into an Existing House:
@@ -136,7 +142,9 @@ export class AppNavigator extends React.Component {
                 numberOfPeople: "",
                 userName: "",
               }}
-              onSubmit={(values) => this.props.setProfile(values)}
+              onSubmit={(values) => this.props.setProfile(Object.assign({}, values, {
+                members: [values.userName]
+              }))}
             >
               {({ handleChange, handleBlur, handleSubmit, values }) => (
                 <View
@@ -267,7 +275,7 @@ export class AppNavigator extends React.Component {
                 </View>
               )}
             </Formik>
-            <Text>{`${this.props.qrCodeGenerated}`}</Text>
+            
           </ScrollView>
         </KeyboardAvoidingView>
       );
@@ -288,7 +296,7 @@ export class AppNavigator extends React.Component {
               (This will be available at anytime in the app.)
             </Text>
           </ScrollView>
-          <TouchableOpacity style={{backgroundColor: 'blue', marginTop: 35, padding: 20, borderRadius: 100, width: 200, height: 65, alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => this.props.setupComplete(true)} style={{backgroundColor: 'blue', marginTop: 35, padding: 20, borderRadius: 100, width: 200, height: 65, alignItems: 'center'}}>
             <Text style={{color: 'white', fontSize: 20}}>Continue</Text>
           </TouchableOpacity>
           
@@ -305,7 +313,7 @@ export class AppNavigator extends React.Component {
           }}
         >
           <Text style={{ marginTop: "25%", fontSize: 17 }}>
-            Ask your roomate for your house's QR Code!
+            Ask a roomate for your house's QR Code!
           </Text>
           <Text
             style={{
@@ -366,19 +374,13 @@ export class AppNavigator extends React.Component {
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === "Home") {
-                iconName = focused ? faMeteor : faMeteor;
-              } else if (route.name === "Settings") {
-                iconName = focused ? faSlidersH : faSlidersH;
-              } else if (route.name === "Your Stars") {
-                iconName = focused ? faStar : faStar;
-              } else if (route.name === "Their Stars") {
-                iconName = focused ? faStarAndCrescent : faStarAndCrescent;
-              } else if (route.name === "Learn") {
-                iconName = focused ? faEye : faEye;
-              } else if (route.name === "Profile") {
-                iconName = focused ? faUserAlt : faUserAlt;
-              }
+              if (route.name === "Bills") {
+                iconName = focused ? faFileInvoiceDollar : faFileInvoice;
+              } else if (route.name === "IOUs") {
+                iconName = focused ? faCommentDollar : faCommentsDollar;
+              } else if (route.name === "Your Home") {
+                iconName = focused ? faDoorOpen : faDoorClosed;
+              } 
 
               // You can return any component that you like here!
               return (
@@ -391,11 +393,9 @@ export class AppNavigator extends React.Component {
             inactiveTintColor: "gray",
           }}
         >
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Your Stars" component={DetailsScreen} />
-          <Tab.Screen name="Their Stars" component={DetailsScreen} />
-          <Tab.Screen name="Learn" component={DetailsScreen} />
-          <Tab.Screen name="Profile" component={DetailsScreen} />
+          <Tab.Screen name="Bills" component={HomeScreen} />
+          <Tab.Screen name="IOUs" component={DetailsScreen} />
+          <Tab.Screen name="Your Home" component={DetailsScreen} />
         </Tab.Navigator>
       );
     }
